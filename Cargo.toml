@@ -1,0 +1,15 @@
+[package]
+name = "ruesti_base"
+version = "0.1.0-SNAPSHOT"
+authors = ["Lars Hupel <lars.hupel@mytum.de>"]
+edition = "2018"
+
+[lib]
+crate-type = ["staticlib"]
+path = "src/main/rust/lib.rs"
+
+[profile.release]
+lto = true
+
+[dependencies]
+log = "^0.4.0"
