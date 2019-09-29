@@ -13,3 +13,6 @@ lto = true
 
 [dependencies]
 log = "^0.4.0"
+
+[features]
+ruesti_test = []

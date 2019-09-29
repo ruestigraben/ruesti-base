@@ -8,9 +8,9 @@ object BaseTests extends TestSuite {
 
   val tests = Tests {
     test("Integration") {
-      val context = Context.newBuilder().allowAllAccess(true).build();
+      val context = Context.newBuilder().allowAllAccess(true).build()
 
-      val resource = getClass.getClassLoader.getResource("ruesti_base.bc")
+      val resource = getClass.getClassLoader.getResource("ruesti_base_test.bc")
       val source = Source.newBuilder("llvm", resource).build()
       context.eval(source)
 
