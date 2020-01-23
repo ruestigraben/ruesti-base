@@ -1,8 +1,6 @@
 # ruesti-base
 Base library for Rüstigraben
 
-[![Build Status](https://travis-ci.com/ruestigraben/ruesti-base.svg?branch=master)](https://travis-ci.com/ruestigraben/ruesti-base)
-
 ## What?
 
 This is a library-in-progress to run Rust code on [GraalVM](https://www.graalvm.org/).
