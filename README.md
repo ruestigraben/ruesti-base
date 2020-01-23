@@ -1,6 +1,8 @@
 # ruesti-base
 Base library for Rüstigraben
 
+![](https://github.com/ruestigraben/ruesti-base/workflows/Build/badge.svg)
+
 ## What?
 
 This is a library-in-progress to run Rust code on [GraalVM](https://www.graalvm.org/).
