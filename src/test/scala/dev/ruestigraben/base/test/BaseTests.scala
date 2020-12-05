@@ -2,22 +2,20 @@ package dev.ruestigraben.base.test
 
 import dev.ruestigraben.base.Logging
 import org.graalvm.polyglot.{Context, Source}
-import utest._
+import munit.FunSuite
 
-object BaseTests extends TestSuite {
+class BaseTests extends FunSuite {
 
-  val tests = Tests {
-    test("Integration") {
-      val context = Context.newBuilder().allowAllAccess(true).build()
+  test("Integration") {
+    val context = Context.newBuilder().allowAllAccess(true).build()
 
-      val resource = getClass.getClassLoader.getResource("ruesti_base_test.bc")
-      val source = Source.newBuilder("llvm", resource).build()
-      context.eval(source)
+    val resource = getClass.getClassLoader.getResource("ruesti_base_test.bc")
+    val source = Source.newBuilder("llvm", resource).build()
+    context.eval(source)
 
-      Logging.install(context)
+    Logging.install(context)
 
-      context.getBindings("llvm").getMember("__test").as(classOf[Runnable]).run()
-    }
+    context.getBindings("llvm").getMember("__test").as(classOf[Runnable]).run()
   }
 
 }
