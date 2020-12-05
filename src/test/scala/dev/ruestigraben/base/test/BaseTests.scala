@@ -33,7 +33,7 @@ class BaseTests extends FunSuite {
   test("Integration (success)") {
     val context = Context.newBuilder().allowAllAccess(true).build()
 
-    val resource = getClass.getClassLoader.getResource("ruesti_base_test.bc")
+    val resource = getClass.getClassLoader.getResource(BuildInfo.test_ruestiTargetName)
     val source = Source.newBuilder("llvm", resource).build()
     context.eval(source)
 
@@ -65,7 +65,7 @@ class BaseTests extends FunSuite {
   test("Integration (failure)") {
     val context = Context.newBuilder().allowAllAccess(true).build()
 
-    val resource = getClass.getClassLoader.getResource("ruesti_base_test.bc")
+    val resource = getClass.getClassLoader.getResource(BuildInfo.test_ruestiTargetName)
     val source = Source.newBuilder("llvm", resource).build()
     context.eval(source)
 

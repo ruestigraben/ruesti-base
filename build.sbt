@@ -13,3 +13,12 @@ libraryDependencies ++= Seq(
 )
 
 testFrameworks += new TestFramework("munit.Framework")
+
+Test / buildInfoKeys := Seq[BuildInfoKey](
+  Test / ruestiTargetName
+)
+
+Test / buildInfoPackage := "dev.ruestigraben.base.test"
+
+sbtbuildinfo.BuildInfoPlugin.buildInfoDefaultSettings
+sbtbuildinfo.BuildInfoPlugin.buildInfoScopedSettings(Test)
