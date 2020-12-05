@@ -1,5 +1,7 @@
 use core::u64;
 use core::intrinsics::transmute;
+use std::ffi::CString;
+use std::os::raw::c_char;
 
 #[repr(C)] pub struct Value {
     _private: [u8; 0]
@@ -14,8 +16,8 @@ use core::intrinsics::transmute;
 }
 
 extern "C" {
-    fn polyglot_import(name: *const u8) -> *mut Value;
-    fn polyglot_java_type(classname: *const u8) -> *mut Value;
+    fn polyglot_import(name: *const c_char) -> *mut Value;
+    fn polyglot_java_type(classname: *const c_char) -> *mut Value;
     fn polyglot_is_null(value: *const Value) -> bool;
     pub fn polyglot_invoke(value: *mut Value, name: *const u8, ...) -> *mut Value;
     fn polyglot_can_execute(value: *const Value) -> bool;
@@ -26,21 +28,6 @@ extern "C" {
     fn polyglot_get_string_size(value: *const Value) -> u64;
     fn polyglot_fits_in_i32(value: *const Value) -> bool;
     fn polyglot_as_i32(value: *const Value) -> i32;
-}
-
-fn check_null_termination(str: &str) -> *const u8 {
-    // from the <terminated> crate
-    let nul_pos = str.bytes().position(|b| b == 0);
-    match nul_pos {
-        None => panic!("not null terminated"),
-        Some(pos) =>
-            if pos != str.len() - 1 {
-                panic!("null occurs in the string")
-            }
-            else {
-                str.as_ptr()
-            }
-    }
 }
 
 pub fn from_string(str: &str) -> *mut Value {
@@ -72,9 +59,13 @@ pub fn is_null(value: *const Value) -> bool {
     unsafe { polyglot_is_null(value) }
 }
 
+fn make_cstring(string: &str) -> CString {
+    CString::new(string).expect("Could not convert to CString")
+}
+
 pub fn import(name: &str) -> *mut Value {
-    let str = check_null_termination(name);
-    let value = unsafe { polyglot_import(str) };
+    let c_str = make_cstring(name);
+    let value = unsafe { polyglot_import(c_str.as_ptr()) };
     if is_null(value) {
         panic!("Import failed")
     }
@@ -91,8 +82,8 @@ pub fn as_executable(value: *const Value) -> *const Executable {
 }
 
 pub fn java_type(name: &str) -> *mut Constructor {
-    let str = check_null_termination(name);
-    let value = unsafe { polyglot_java_type(str) };
+    let c_str = make_cstring(name);
+    let value = unsafe { polyglot_java_type(c_str.as_ptr()) };
     if is_null(value) || !unsafe { polyglot_can_instantiate(value) } {
         panic!("Not a type")
     }

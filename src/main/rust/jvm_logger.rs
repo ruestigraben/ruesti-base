@@ -12,8 +12,8 @@ impl log::Log for JvmLogger {
     }
 
     fn log(&self, record: &log::Record) {
-        let execute = as_executable(import("__base_logging\0"));
-        let record_type = java_type("dev.ruestigraben.base.logging.Record\0");
+        let execute = as_executable(import("__base_logging"));
+        let record_type = java_type("dev.ruestigraben.base.logging.Record");
 
         let level = match record.metadata().level() {
             log::Level::Trace => "TRACE",
